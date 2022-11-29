@@ -1,18 +1,27 @@
-package com.ljlopezm.dogedex
+package com.ljlopezm.dogedex.doglist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ljlopezm.dogedex.Dog
+import com.ljlopezm.dogedex.R
 import com.ljlopezm.dogedex.databinding.ActivityDogListBinding
 
 class DogListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_dog_list)
+        setContentView(binding.root)
 
         val dogList = getFakeDogs()
 
         val recycler = binding.dogRecycler
+        recycler.layoutManager = LinearLayoutManager(this)
+
+        val adapter = DogAdapter()
+        recycler.adapter = adapter
+
+        adapter.submitList(dogList)
     }
 
     private fun getFakeDogs(): MutableList<Dog> {
