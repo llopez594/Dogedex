@@ -1,5 +1,6 @@
 package com.ljlopezm.dogedex.doglist
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ljlopezm.dogedex.Dog
 import com.ljlopezm.dogedex.R
 import com.ljlopezm.dogedex.databinding.ActivityDogListBinding
+import com.ljlopezm.dogedex.dogdetail.DogDetailActivity
+import com.ljlopezm.dogedex.dogdetail.DogDetailActivity.Companion.DOG_KEY
 
 class DogListActivity : AppCompatActivity() {
 
@@ -21,6 +24,12 @@ class DogListActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
 
         val adapter = DogAdapter()
+        adapter.setOnItemClickListener {
+            // Pasar el dog a DogDetailActivity
+            val intent = Intent(this, DogDetailActivity::class.java)
+            intent.putExtra(DOG_KEY, it)
+            startActivity(intent)
+        }
         recycler.adapter = adapter
 
         dogListViewModel.dogList.observe(this) { dogList ->

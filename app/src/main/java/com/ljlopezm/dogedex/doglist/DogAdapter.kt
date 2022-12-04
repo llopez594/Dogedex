@@ -21,6 +21,11 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallbock) {
 
     }
 
+    private var onItemClickListener: ((Dog) -> Unit)? = null
+    fun setOnItemClickListener(onItemClickListener: (Dog) -> Unit) {
+        this.onItemClickListener = onItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): DogViewHolder {
         val binding = DogListItemBinding
@@ -39,6 +44,9 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallbock) {
 
             fun bind(dog: Dog) {
                 binding.dogName.text = dog.name
+                binding.dogName.setOnClickListener {
+                    onItemClickListener?.invoke(dog)
+                }
             }
     }
 
