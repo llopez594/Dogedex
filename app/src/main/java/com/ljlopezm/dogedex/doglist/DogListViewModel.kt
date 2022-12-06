@@ -1,5 +1,6 @@
 package com.ljlopezm.dogedex.doglist
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,8 @@ class DogListViewModel : ViewModel() {
     val dogList: LiveData<List<Dog>>
         get() = _dogList
 
-    private val _status = MutableLiveData<ApiResponseStatus>()
-    val status: LiveData<ApiResponseStatus>
+    private val _status = MutableLiveData<ApiResponseStatus<List<Dog>>>()
+    val status: LiveData<ApiResponseStatus<List<Dog>>>
         get() = _status
 
     private val dogRepository = DogRepository()
@@ -30,9 +31,10 @@ class DogListViewModel : ViewModel() {
         }
     }
 
-    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus) {
+    @SuppressLint("NullSafeMutableLiveData")
+    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
         if (apiResponseStatus is ApiResponseStatus.Success) {
-            _dogList.value = apiResponseStatus.dogList
+            _dogList.value = apiResponseStatus.data
         }
 
         _status.value = apiResponseStatus
